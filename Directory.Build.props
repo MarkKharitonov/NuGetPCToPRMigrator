@@ -1,0 +1,9 @@
+﻿<Project>
+  <PropertyGroup>
+    <Product>NuGetPCToPRMigrator</Product>
+    <AssemblyTitle>$(Product)</AssemblyTitle>
+    <Description>Migrates all the non Asp.Net projects in the given solution to PackageReference format.</Description>
+    <Team>Release Engineering</Team>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Build.Template.props" Condition="'$(TF_BUILD)' != ''"/>
+</Project>
