@@ -60,4 +60,4 @@ The [Migration tool][3] opens an HTML report at the end of a migration. For a so
 [3]: https://devblogs.microsoft.com/nuget/migrate-packages-config-to-package-reference/
 [4]: https://docs.microsoft.com/en-us/nuget/consume-packages/migrate-packages-config-to-package-reference#issue
 [5]: https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys.sendwait?view=netcore-3.1
-[6]: https://stackoverflow.com/questions/64163515/migrating-multiple-large-solutions-to-packagereference-en-masse
+[6]: https://stackoverflow.com/a/64200862/80002
