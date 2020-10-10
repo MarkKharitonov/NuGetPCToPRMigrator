@@ -15,7 +15,7 @@ namespace Ceridian
     {
         private const string DEVENV = @"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe";
         private const string DEFAULT_BROWSER = "chrome.exe";
-    
+
         private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
 
         [DllImport("USER32.DLL")]
@@ -79,7 +79,7 @@ namespace Ceridian
                 return;
             }
 
-            foreach (var slnFilePath in args)
+            foreach (var slnFilePath in args.Select(Path.GetFullPath))
             {
                 Process devenv = null;
                 var dte = RunningVSInstanceFinder.Find(slnFilePath);
@@ -159,6 +159,12 @@ namespace Ceridian
             }
         }
 
+        private static string Save(EnvDTE.Project project)
+        {
+            project.Save();
+            return null;
+        }
+
         private static Func<string, string> GetHtmlReportFilePathFunc(string slnFilePath)
         {
             var migrationBackupFolderPath = $@"{slnFilePath}\..\MigrationBackup";
@@ -179,13 +185,6 @@ namespace Ceridian
                 .Where(path => !done.Contains(path) && File.Exists($@"{path}\{projectName}\NuGetUpgradeLog.html"))
                 .Select(path => $@"{path}\{projectName}\NuGetUpgradeLog.html")
                 .FirstOrDefault() : null;
-        }
-
-        private static object SaveAll(EnvDTE80.DTE2 dte)
-        {
-            dte.ExecuteCommand("File.SaveAll");
-            Thread.Sleep(5000);
-            return null;
         }
 
         private static void MigrateSolution(EnvDTE80.DTE2 dte, string slnFilePath)
@@ -220,8 +219,8 @@ namespace Ceridian
                         Directory.Delete($@"{htmlReportFilePath}\..\..", true);
                     }
                 }
+                ExecuteWithRetry(() => Save(project));
             }
-            ExecuteWithRetry(() => SaveAll(dte));
         }
 
         private static bool IsWebApplication(EnvDTE.Project project) =>
